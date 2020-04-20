@@ -1,5 +1,6 @@
 import API.Api;
 import News.NewsInfo;
+import Numbers.NumberFacts;
 import com.google.gson.Gson;
 
 import java.net.Socket;
@@ -45,6 +46,7 @@ public class Jebnai {
         Api api = new Api("https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=cfe0d09f943b481dacef6cef3df82875");
         jsonString = api.JsonAsString(jsonString);
         NewsInfo article = new Gson().fromJson(jsonString, NewsInfo.class);
+        NumberFacts facts = new NumberFacts();
 
 
         while(in.hasNext()){
@@ -57,6 +59,7 @@ public class Jebnai {
             if(line.toLowerCase().endsWith("jebnai latest news")){
                 article.returnArticles(basic);
             }
+            facts.returnNumFact(basic, line);
             basic.greetings(line);
             basic.kickMe(line);
             // write("PRIVMSG", "#cyberia no");
