@@ -19,15 +19,31 @@ public class BasicCommands {
     }
 
     // reply to greetings
-    public void greetings(String line){
-        if(line.toLowerCase().endsWith("hello jebnai")){
-            write("PRIVMSG", "#cyberia Hello");
+    public void greetings(String line, String channel){
+        if(line.toLowerCase().endsWith(":hello jebnai")){
+            write("PRIVMSG", "#" + channel + " :" + "Hello");
         }
     }
 
-    public void kickMe(String line){
-        if(line.toLowerCase().endsWith("kick me")){
-            write("PRIVMSG", "jenai :jenai you are a monkey get kicked");
+    // kicks user from channel if bot has privileges
+    public void kickMe(String line, String channel){
+        String user = line.substring(line.lastIndexOf(" ")+1);
+        if(line.toLowerCase().endsWith(":jebnai kick " + user)){
+            write("KICK", "#" + channel + " :" + user);
+        }
+    }
+
+    // returns the local time of the server
+    public void queryTime(String line, String channel){
+        String time;
+        if(line.toLowerCase().endsWith(":jebnai time")) {
+            write("TIME", "selsey.nsqdc.city.ac.uk");
+        }
+    }
+
+    public void listChannels(String line, String channel){
+        if(line.toLowerCase().endsWith(":jebnai channels")){
+            write("LIST", "");
         }
     }
 }

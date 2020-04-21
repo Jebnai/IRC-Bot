@@ -2,16 +2,16 @@ import API.Api;
 import News.NewsInfo;
 import Numbers.NumberFacts;
 import com.google.gson.Gson;
-
 import java.net.Socket;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import Commands.*;
+
 public class Jebnai {
-    private static String nickname;
-    private static String username;
-    private static String realName;
+    private static String nickname = "JebnaiBot";
+    private static String username = "water";
+    private static String realName = "no";
     private static String channel;
     private static PrintWriter out;
     private static Scanner in;
@@ -21,12 +21,12 @@ public class Jebnai {
     public static void main(String[] args) throws IOException{
         Scanner console = new Scanner(System.in);
         // entering details before connecting
-        System.out.print("Enter a nickname: ");
+        /* System.out.print("Enter a nickname: ");
         nickname = console.nextLine();
         System.out.print("Enter a username: ");
         username = console.nextLine();
         System.out.print("Enter a full name: ");
-        realName = console.nextLine();
+        realName = console.nextLine(); */
         System.out.print("Enter a channel: ");
         channel = console.nextLine();
 
@@ -52,17 +52,23 @@ public class Jebnai {
         while(in.hasNext()){
             line = in.nextLine();
             System.out.println("<<< " + line);
+            if(line.endsWith("BST")){
+                String time[] = line.split(" ");
+                // time = line.substring(line.lastIndexOf(" ")+1);
+                basic.write("PRIVMSG", "#" + channel + " :" + time[time.length-2] + time[time.length-1]);
+            }
             if(line.startsWith("PING")){
                String thePing = line.split(" ", 2)[1];
                basic.write("PONG", thePing);
             }
-            if(line.toLowerCase().endsWith("jebnai latest news")){
-                article.returnArticles(basic);
+            if(line.toLowerCase().endsWith(":jebnai latest news")){
+                article.returnArticles(basic, channel);
             }
-            facts.returnNumFact(basic, line);
-            basic.greetings(line);
-            basic.kickMe(line);
-            // write("PRIVMSG", "#cyberia no");
+            facts.returnNumFact(basic, line, channel);
+            basic.greetings(line, channel);
+            basic.kickMe(line, channel);
+            basic.queryTime(line, channel);
+            basic.listChannels(line, channel);
         }
 
         in.close();
