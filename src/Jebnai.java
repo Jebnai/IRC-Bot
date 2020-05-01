@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import Commands.*;
+import Magic.*;
 
 public class Jebnai {
     private static String nickname = "JebnaiBot";
@@ -21,12 +22,6 @@ public class Jebnai {
     public static void main(String[] args) throws IOException{
         Scanner console = new Scanner(System.in);
         // entering details before connecting
-        /* System.out.print("Enter a nickname: ");
-        nickname = console.nextLine();
-        System.out.print("Enter a username: ");
-        username = console.nextLine();
-        System.out.print("Enter a full name: ");
-        realName = console.nextLine(); */
         System.out.print("Enter a channel: ");
         channel = console.nextLine();
 
@@ -47,6 +42,7 @@ public class Jebnai {
         jsonString = api.JsonAsString(jsonString);
         NewsInfo article = new Gson().fromJson(jsonString, NewsInfo.class);
         NumberFacts facts = new NumberFacts();
+        EightBall eb = new EightBall();
 
 
         while(in.hasNext()){
@@ -54,8 +50,11 @@ public class Jebnai {
             System.out.println("<<< " + line);
             if(line.endsWith("BST")){
                 String time[] = line.split(" ");
-                // time = line.substring(line.lastIndexOf(" ")+1);
-                basic.write("PRIVMSG", "#" + channel + " :" + time[time.length-2] + time[time.length-1]);
+                basic.write("PRIVMSG", "#" + channel + " :" + time[time.length-2] + " " + time[time.length-1]);
+            }
+            if(line.contains(":selsey.nsqdc.city.ac.uk 322")){
+                // String channels[] = line.split(" ");
+                basic.write("PRIVMSG", "#" + channel + " :" + "->" + line.substring(38));
             }
             if(line.startsWith("PING")){
                String thePing = line.split(" ", 2)[1];
@@ -64,17 +63,21 @@ public class Jebnai {
             if(line.toLowerCase().endsWith(":jebnai latest news")){
                 article.returnArticles(basic, channel);
             }
+            if(line.contains(":selsey.nsqdc.city.ac.uk 353")){
+                basic.write("PRIVMSG", "#" + channel + " :" + "->" + line.substring(40));
+            }
             facts.returnNumFact(basic, line, channel);
             basic.greetings(line, channel);
             basic.kickMe(line, channel);
             basic.queryTime(line, channel);
             basic.listChannels(line, channel);
+            eb.response(line, channel, basic);
+            basic.queryNames(line, channel);
         }
 
         in.close();
         out.close();
         socket.close();
         System.out.println("Complete.");
-
     }
 }

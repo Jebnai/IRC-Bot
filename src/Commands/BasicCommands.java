@@ -1,9 +1,13 @@
 package Commands;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BasicCommands {
     private String line;
     private static PrintWriter out;
+    private List<String> channels = new ArrayList<>();
+    private boolean isChannelList = false;
 
     public BasicCommands(String line, PrintWriter out){
         this.line = line;
@@ -25,6 +29,7 @@ public class BasicCommands {
         }
     }
 
+
     // kicks user from channel if bot has privileges
     public void kickMe(String line, String channel){
         String user = line.substring(line.lastIndexOf(" ")+1);
@@ -44,6 +49,14 @@ public class BasicCommands {
     public void listChannels(String line, String channel){
         if(line.toLowerCase().endsWith(":jebnai channels")){
             write("LIST", "");
+        }
+    }
+
+    public void queryNames(String line, String channel){
+        if(line.toLowerCase().endsWith(":jebnai all names")){
+            write("NAMES", "");
+        }else if(line.toLowerCase().endsWith(":jebnai names here")){
+            write("NAMES", "#" + channel);
         }
     }
 }

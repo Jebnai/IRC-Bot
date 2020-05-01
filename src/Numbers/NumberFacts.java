@@ -26,7 +26,7 @@ public class NumberFacts {
     }
 
     public void fetchFact(String link, String fact, BasicCommands bc, String channel) throws IOException{
-        bc.write("PRIVMSG", "#" + channel + " :" + "Fetching...");
+        bc.write("PRIVMSG", "#" + channel + " :" + "Fetching... (May take up to 10 seconds)");
         trivia = new Api(link);
         fact = trivia.JsonAsString(fact);
         bc.write("PRIVMSG", "#" + channel + " :" + fact);
